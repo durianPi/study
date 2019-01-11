@@ -1,0 +1,14 @@
+启动交互式容器：
+docker run -i -t IMAGE /bin/bash
+-i --interactive=true|false 默认是false
+-t --tty=true|false 默认是false
+
+docker ps 查看容器(正在运行的)
+docker ps -a 查看所有容器
+docker ps -l 最新创建的容器
+docker inspect CONTAINERID 查看刚刚建立起的容器
+docker run --name=container01 -i -t ubuntu /bin/bash 自定义容器的名字
+docker start -i xxx 重新启动停止容器
+docker rm xxx 删除容器
+
+
