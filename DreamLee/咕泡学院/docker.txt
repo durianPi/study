@@ -45,6 +45,30 @@ docker pull		拉取镜像（例如：docker pull registry.docker-cn.com/library/
 	docker rmi [OPTIONS] IMAGE		删除镜像
 	-f,--force=false			Force removal of the image
 	--no-prune=false			Do not delete untagged parents
+	2.获取和推送镜像
+	I.查找镜像
+		docker hub:https://registry.hub.docker.com
+		docker search [OPTIONS] TERM
+		--automated=false Only show automated builds
+		--no-trunc=false Don't truncate output
+		-s,--start=0 Only displays with at least x starts
+	II.拉取镜像
+		docker pull [OPTIONS] NAME[:TAG]
+		-a,--all-tags=false Download all tagged images in the repository
+		使用--registry-mirror选项
+		1.修改：/etc/default/docker
+		2.添加：DOCKER_OPTS="--registry-mirror=http://MIRROR-ADDR"
+		https://www.daocloud.io
+
+		docker login daocloud.io
+		docker pull daocloud.io/dreamlee0201/2048_game:master-0a6e91e
+
+
+
+
+
+
+
 
 
 
