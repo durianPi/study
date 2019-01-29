@@ -6,62 +6,86 @@ docker repository	仓库：共有；私有；docker Hub
 docker 			在线演示地址：https://www.docker.com/tryit
 docker pull		拉取镜像（例如：docker pull registry.docker-cn.com/library/ubuntu:16.04）
 
+
 二.容器的基本操作
-	1.基本命令
-	docker run -i -t IMAGE /bin/bash			启动交互式容器
-	-i --interactive=true|false 默认是false
-	-t --tty=true|false 默认是false
+1.基本命令
+docker run -i -t IMAGE /bin/bash			启动交互式容器
+-i --interactive=true|false 默认是false
+-t --tty=true|false 默认是false
 
-	docker ps						查看容器(正在运行的)
-	docker ps -a						查看所有容器
-	docker ps -l						最新创建的容器
-	docker inspect [CONTAINERID]				查看刚刚建立起的容器
-	docker run --name=container01 -i -t ubuntu /bin/bash	自定义容器的名字
-	docker start -i [CONTAINERID]				重新启动停止容器
-	docker rm [CONTAINERID] 				删除容器
+docker ps						查看容器(正在运行的)
+docker ps -a						查看所有容器
+docker ps -l						最新创建的容器
+docker inspect [CONTAINERID]				查看刚刚建立起的容器
+docker run --name=container01 -i -t ubuntu /bin/bash	自定义容器的名字
+docker start -i [CONTAINERID]				重新启动停止容器
+docker rm [CONTAINERID] 				删除容器
 
-	docker run -it [REPOSITORY]:[TAG] /bin/bash		运行一个容器
-	docker attach [CONTAINERID]				进入运行的容器
-	docker logs -tf [CONTAINERID]				查看docker容器运行的情况
-	docker top [CONTAINERID]				查看容器内的进程
-	docker exec [-d][-i][-t] [CONTAINERID] [CMD][ARG...]	在运行中的容器内启动新进程
-	docker stop [id];docker kill [CONTAINERID]		停止运行的容器
+docker run -it [REPOSITORY]:[TAG] /bin/bash		运行一个容器
+docker attach [CONTAINERID]				进入运行的容器
+docker logs -tf [CONTAINERID]				查看docker容器运行的情况
+docker top [CONTAINERID]				查看容器内的进程
+docker exec [-d][-i][-t] [CONTAINERID] [CMD][ARG...]	在运行中的容器内启动新进程
+docker stop [id];docker kill [CONTAINERID]		停止运行的容器
 
-	2.在容器中部署静态网站
-	run [-P]	容器暴露的所有端口进行映射，设置容器的端口映射
-	run [-p]	指定映射哪些容器的端口
+2.在容器中部署静态网站
+run [-P]	容器暴露的所有端口进行映射，设置容器的端口映射
+run [-p]	指定映射哪些容器的端口
 
-		步骤：
-		1)docker run -p 80 --name web -it registry.docker-cn.com/library/ubuntu /bin/bash
+	步骤：
+	1)docker run -p 80 --name web -it registry.docker-cn.com/library/ubuntu /bin/bash
+
 
 三.Docker镜像与仓库（一）
-	1.查看和删除镜像
-	docker images [OPTIONS][REPOSITORY]	查看镜像
-	-a,--all=false
-	-f,--filter=[]
-	--no-trunc=false
-	-q,--quiet=false			返回镜像ID
-	docker inspect [ID]			查看镜像
-	docker rmi [OPTIONS] IMAGE		删除镜像
-	-f,--force=false			Force removal of the image
-	--no-prune=false			Do not delete untagged parents
-	2.获取和推送镜像
-	I.查找镜像
-		docker hub:https://registry.hub.docker.com
-		docker search [OPTIONS] TERM
-		--automated=false Only show automated builds
-		--no-trunc=false Don't truncate output
-		-s,--start=0 Only displays with at least x starts
-	II.拉取镜像
-		docker pull [OPTIONS] NAME[:TAG]
-		-a,--all-tags=false Download all tagged images in the repository
-		使用--registry-mirror选项
-		1.修改：/etc/default/docker
-		2.添加：DOCKER_OPTS="--registry-mirror=http://MIRROR-ADDR"
-		https://www.daocloud.io
+1.查看和删除镜像
+docker images [OPTIONS][REPOSITORY]	查看镜像
+-a,--all=false
+-f,--filter=[]
+--no-trunc=false
+-q,--quiet=false			返回镜像ID
+docker inspect [ID]			查看镜像
+docker rmi [OPTIONS] IMAGE		删除镜像
+-f,--force=false			Force removal of the image
+--no-prune=false			Do not delete untagged parents
+2.获取和推送镜像
+I.查找镜像
+	docker hub:https://registry.hub.docker.com
+	docker search [OPTIONS] TERM
+	--automated=false Only show automated builds
+	--no-trunc=false Don't truncate output
+	-s,--start=0 Only displays with at least x starts
+II.拉取镜像
+	docker pull [OPTIONS] NAME[:TAG]
+	-a,--all-tags=false Download all tagged images in the repository
+	使用--registry-mirror选项
+	1.修改：/etc/default/docker
+	2.添加：DOCKER_OPTS="--registry-mirror=http://MIRROR-ADDR"
+	https://www.daocloud.io
 
-		docker login daocloud.io
-		docker pull daocloud.io/dreamlee0201/2048_game:master-0a6e91e
+	docker login daocloud.io
+	docker pull daocloud.io/dreamlee0201/2048_game:master-0a6e91e
+
+
+四.Docker客户端与守护进程
+1.Docker的C/S模式
+  I.Remote API:RESTful风格API；STDIN、STDOUT、STDERR
+    Docker官方的Remote API Reference:https://docs.docker.com/reference/api/docker_remote_api/
+  II.连接方式
+    unix:///var/run/docker.sock  --命令:nc -U /var/run/docker.sock;GET /info HTTP/1.1
+    tcp://host:port
+    fd://socketfd
+2.Docker守护进程的配置和操作
+
+
+五.Dockerfile指令(上)
+1.FROM:已经存在的镜像；基础镜像；必须是第一条非注释指令
+  from <image>;from <image>:<tag>
+2.MAINTAINER:指定镜像的作者信息，包含镜像的所有者和联系信息
+3.RUN:指定当前镜像中运行的命令
+  run <command> (shell模式)
+4.EXPOSE
+  expose <port>
+  docker run -p 80 -d dormancypress/df_test1 nginx -g "daemon off;"
 
 
 
